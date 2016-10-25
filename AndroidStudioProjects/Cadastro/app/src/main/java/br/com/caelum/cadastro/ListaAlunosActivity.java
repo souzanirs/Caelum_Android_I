@@ -3,7 +3,10 @@ package br.com.caelum.cadastro;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,22 +42,24 @@ public class ListaAlunosActivity extends AppCompatActivity {
         });
 
         //Escutando um click longo
-        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(ListaAlunosActivity.this,"Clique Longo no item "+(i+1),Toast.LENGTH_SHORT).show();
+//        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(ListaAlunosActivity.this,"Clique Longo no item "+(i+1),Toast.LENGTH_SHORT).show();
+//
+//                /*
+//                *No caso do click longo é possivel executar, após a execução do mesmo,
+//                * a ação do click simples, por isso é necessário um retorno boleano
+//                * "TRUE" executa apenas a ação definida na ação do click longo
+//                * "FALSE" executa a ação definida no click longo e posteriormente
+//                * a ação do click simples
+//                */
+//
+//                return true;
+//            }
+//        });
 
-                /*
-                *No caso do click longo é possivel executar, após a execução do mesmo,
-                * a ação do click simples, por isso é necessário um retorno boleano
-                * "TRUE" executa apenas a ação definida na ação do click longo
-                * "FALSE" executa a ação definida no click longo e posteriormente
-                * a ação do click simples
-                */
-
-                return true;
-            }
-        });
+        registerForContextMenu(lista);
 
         Button btnAdicionar = (Button) findViewById(R.id.lista_alunos_novo);
 
@@ -91,5 +96,27 @@ public class ListaAlunosActivity extends AppCompatActivity {
         //Para preenchermos a lista precisamos adapta-la a um layout, carregando as informações passadas (no nosso caso os nomes)
         final ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, listaAlunos);
         lista.setAdapter(adapter);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final Aluno alunoSelecionado = (Aluno) lista.getAdapter().getItem( info.position);
+
+        MenuItem ligar = menu.add("Ligar");
+        MenuItem novoSms = menu.add("Novo SMS");
+        MenuItem mapa = menu.add("Localizar no Mapa");
+        MenuItem site = menu.add("Abrir Home");
+        MenuItem deletar = menu.add("Remover");
+
+        deletar.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                dao.deletar(alunoSelecionado);
+                return false;
+            }
+        } );
     }
 }
