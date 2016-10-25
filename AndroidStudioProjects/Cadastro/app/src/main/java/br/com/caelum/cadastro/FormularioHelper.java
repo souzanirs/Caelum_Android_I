@@ -41,4 +41,11 @@ public class FormularioHelper {
         return aluno;
     }
 
+    public boolean temNome() {
+        return !nome.getText().toString().isEmpty();
+    }
+
+    public void mostraErro() {
+        nome.setError("Campo nome obrigatório");
+    }
 }

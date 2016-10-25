@@ -15,7 +15,8 @@
             android:id="@+id/formulario_nome"
             android:hint="Nome"
             android:textAlignment="center"
-            android:textSize="25dp"/>
+            android:textSize="25dp"
+            />
 
         <EditText
             android:layout_width="match_parent"

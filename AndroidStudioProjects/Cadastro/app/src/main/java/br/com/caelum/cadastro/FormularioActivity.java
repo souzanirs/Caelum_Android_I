@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import br.com.caelum.cadastro.DAO.AlunoDAO;
 import br.com.caelum.cadastro.classes.Aluno;
 
 public class FormularioActivity extends AppCompatActivity {
@@ -77,12 +78,27 @@ public class FormularioActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.menu_salvar: //Os comentários das ações do botão salvar estão no onCreate (inicio do curso)
 
+                //Cria Aluno utilizando o Helper
                 Aluno aluno = helper.criaAluno();
-                Toast.makeText(FormularioActivity.this, "Aluno "+aluno.getNome()+" salvo com sucesso",Toast.LENGTH_SHORT).show();
 
-                finish();
+                if(helper.temNome()){
 
-                return false;
+                    //Instancia um novo aluno DAO para fazer o insert na base
+                    AlunoDAO alunoDao = new AlunoDAO(FormularioActivity.this);
+
+                    //É feito a inserção do aluno na base de dados
+                    alunoDao.insereAlunoDB(aluno);
+                    Toast.makeText(FormularioActivity.this, "Aluno "+aluno.getNome()+" salvo com sucesso",Toast.LENGTH_SHORT).show();
+
+                    finish();
+
+                    return true;
+
+                } else {
+
+                    helper.mostraErro();
+
+                }
 
             default:
                 return super.onOptionsItemSelected(item);
