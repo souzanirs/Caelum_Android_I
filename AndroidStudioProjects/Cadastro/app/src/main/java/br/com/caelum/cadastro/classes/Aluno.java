@@ -59,4 +59,13 @@ public class Aluno {
     public void setNota(Double nota) {
         this.nota = nota;
     }
+
+    @Override
+    public String toString() {
+        if(this.id < 10) {
+            return "0"+this.id+": "+this.getNome();
+        } else {
+            return this.id+": "+this.getNome();
+        }
+    }
 }

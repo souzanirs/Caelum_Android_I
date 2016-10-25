@@ -2,8 +2,12 @@ package br.com.caelum.cadastro.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.caelum.cadastro.classes.Aluno;
 
@@ -63,4 +67,28 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
         getWritableDatabase().insert(tabela,null, valores);
     }
+
+    public List<Aluno> getLista(){
+        List<Aluno> lista = new ArrayList<Aluno>();
+
+        //Executa a consulta de todos os dados da tabela e gera um arquivo como um bloco de notas
+        Cursor c = getReadableDatabase().rawQuery("select * from "+tabela+";",null);
+
+        //percore nosso bloco de texto e enquanto houver nova linha executa
+        while(c.moveToNext()){
+            Aluno aluno = new Aluno();
+
+            aluno.setId(c.getLong(c.getColumnIndex("id")));
+            aluno.setNome(c.getString(c.getColumnIndex("nome")));
+            aluno.setEndereco(c.getString(c.getColumnIndex("endereco")));
+            aluno.setTelefone(c.getString(c.getColumnIndex("telefone")));
+            aluno.setEmail(c.getString(c.getColumnIndex("email")));
+            aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
+
+            lista.add(aluno);
+        }
+        c.close(); //Lembra-se de sempre fechar
+        return lista;
+    }
+
 }

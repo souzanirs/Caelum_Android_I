@@ -10,28 +10,31 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.List;
+
+import br.com.caelum.cadastro.DAO.AlunoDAO;
+import br.com.caelum.cadastro.classes.Aluno;
+
 public class ListaAlunosActivity extends AppCompatActivity {
 
     private ListView lista;
+    private List<Aluno> listaAlunos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
 
-        String[] alunos ={"Anderson","Filipe","Guilherme"};
+        //Pega a ListView no arquivo XML
         this.lista = (ListView) findViewById(R.id.lista_alunos);
-
-        //Para preenchermos a lista precisamos adapta-la a um layout, carregando as informações passadas (no nosso caso os nomes)
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alunos);
-        lista.setAdapter(adapter);
+        carregaLista();
 
         //Escutando um click simples
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String nome = (String) adapterView.getItemAtPosition(i);
-                Toast.makeText(ListaAlunosActivity.this,"Aluno "+nome,Toast.LENGTH_SHORT).show();
+                Aluno aluno = (Aluno) adapterView.getItemAtPosition(i);
+                Toast.makeText(ListaAlunosActivity.this,"Clique simples "+aluno.getNome(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -69,5 +72,24 @@ public class ListaAlunosActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.carregaLista();
+    }
+
+    private void carregaLista() {
+        //Instanciando o alunoDAO e extraindo a lista de Alunos da base de dados
+        AlunoDAO dao = new AlunoDAO(this);
+        listaAlunos = dao.getLista();
+
+        //sempre que abrir conexão, após utiliza-lo, fechar a conexão
+        dao.close();
+
+        //Para preenchermos a lista precisamos adapta-la a um layout, carregando as informações passadas (no nosso caso os nomes)
+        final ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, listaAlunos);
+        lista.setAdapter(adapter);
     }
 }
