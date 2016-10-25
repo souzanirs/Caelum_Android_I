@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import br.com.caelum.cadastro.classes.Aluno;
+
 public class FormularioActivity extends AppCompatActivity {
+
+    private FormularioHelper helper; //Criando um atributo herper
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,10 @@ public class FormularioActivity extends AppCompatActivity {
 //            }
 //        });
 
+        this.helper = new FormularioHelper(this); //instanciando o Objeto helper
+
+
+
     }
 
     @Override
@@ -71,9 +77,8 @@ public class FormularioActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.menu_salvar: //Os comentários das ações do botão salvar estão no onCreate (inicio do curso)
 
-                EditText viewNome = (EditText) findViewById(R.id.formulario_nome);
-                String nome = viewNome.getText().toString();
-                Toast.makeText(FormularioActivity.this, "Aluno "+nome+" salvo com sucesso",Toast.LENGTH_SHORT).show();
+                Aluno aluno = helper.criaAluno();
+                Toast.makeText(FormularioActivity.this, "Aluno "+aluno.getNome()+" salvo com sucesso",Toast.LENGTH_SHORT).show();
 
                 finish();
 
