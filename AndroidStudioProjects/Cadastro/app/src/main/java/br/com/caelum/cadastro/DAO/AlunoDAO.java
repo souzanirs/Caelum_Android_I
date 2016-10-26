@@ -73,7 +73,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
         ContentValues valores = new ContentValues();
         valores.put("nome",aluno.getNome());
         valores.put("telefone",aluno.getTelefone());
-        valores.put("email",aluno.getEmail());
+        valores.put("email",aluno.getSite());
         valores.put("endereco",aluno.getEndereco());
         valores.put("nota",aluno.getNota());
         return valores;
@@ -93,7 +93,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
             aluno.setNome(c.getString(c.getColumnIndex("nome")));
             aluno.setEndereco(c.getString(c.getColumnIndex("endereco")));
             aluno.setTelefone(c.getString(c.getColumnIndex("telefone")));
-            aluno.setEmail(c.getString(c.getColumnIndex("email")));
+            aluno.setSite(c.getString(c.getColumnIndex("email")));
             aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
 
             lista.add(aluno);

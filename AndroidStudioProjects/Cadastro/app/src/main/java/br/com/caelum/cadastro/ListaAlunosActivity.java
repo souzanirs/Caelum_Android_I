@@ -2,24 +2,28 @@ package br.com.caelum.cadastro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.text.Normalizer;
 import java.util.List;
 
 import br.com.caelum.cadastro.DAO.AlunoDAO;
 import br.com.caelum.cadastro.classes.Aluno;
+import br.com.caelum.cadastro.classes.Permissao;
+
+import static android.content.Intent.ACTION_CALL;
+import static android.content.Intent.ACTION_SEND;
+import static android.content.Intent.ACTION_SENDTO;
+import static android.content.Intent.ACTION_VIEW;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -30,6 +34,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
+        Permissao.fazPermissao(this);
 
         //Pega a ListView no arquivo XML
         this.lista = (ListView) findViewById(R.id.lista_alunos);
@@ -110,10 +115,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
         final Aluno alunoSelecionado = (Aluno) lista.getAdapter().getItem( info.position);
 
         MenuItem ligar = menu.add("Ligar");
-        MenuItem novoSms = menu.add("Novo SMS");
+        MenuItem SMS = menu.add("Enviar SMS");
         MenuItem mapa = menu.add("Localizar no Mapa");
-        MenuItem site = menu.add("Abrir Home");
+        MenuItem site = menu.add("Acessar Home");
         MenuItem deletar = menu.add("Remover");
+        MenuItem compartiplhar = menu.add("Compartilhar");
 
         deletar.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -132,6 +138,45 @@ public class ListaAlunosActivity extends AppCompatActivity {
                             }
                         } ).setNegativeButton("Não",null).show();
 
+
+                return false;
+            }
+        } );
+
+        //Opção Ligar
+        Intent intentLigar = new Intent(ACTION_CALL);
+        intentLigar.setData(Uri.parse("tel:19991940603"));
+        ligar.setIntent(intentLigar);
+
+        //Opção enviar SMS
+        Intent intentSMS = new Intent(ACTION_VIEW);
+        intentSMS.setData(Uri.parse("sms:"+alunoSelecionado.getTelefone()));
+        intentSMS.putExtra("sms_body","Digite sua mensagem");
+        SMS.setIntent(intentSMS);
+
+        //Abrir endereço do aluno no mapa
+        Intent intentMapa = new Intent(ACTION_VIEW);
+        intentMapa.setData(Uri.parse("geo:0,0?z=14&q="+alunoSelecionado.getEndereco()));
+        mapa.setIntent(intentMapa);
+
+        //Enviar email para o aluno
+        Intent intentSite = new Intent(ACTION_VIEW);
+        String alunoSite = alunoSelecionado.getSite();
+
+        if(!alunoSite.startsWith("http://")){
+            alunoSite = "http://"+alunoSite;
+        }
+        intentSite.setData(Uri.parse(alunoSite));
+        site.setIntent(intentSite);
+
+        compartiplhar.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent intentCompartilhar = new Intent(ACTION_SEND);
+                intentCompartilhar.setType("text/plain");
+                intentCompartilhar.putExtra(intentCompartilhar.EXTRA_SUBJECT,"assunto compartilhado");
+                intentCompartilhar.putExtra(intentCompartilhar.EXTRA_TEXT,"texto compartilhado");
+                startActivity(intentCompartilhar.createChooser(intentCompartilhar,"Escolha a aplicação"));
                 return false;
             }
         } );

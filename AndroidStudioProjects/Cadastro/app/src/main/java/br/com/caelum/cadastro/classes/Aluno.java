@@ -11,7 +11,7 @@ public class Aluno implements Serializable{
     private String nome;
     private String telefone;
     private String endereco;
-    private String email;
+    private String site;
     private Double nota;
 
     public long getId() {
@@ -46,12 +46,12 @@ public class Aluno implements Serializable{
         this.endereco = endereco;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSite() {
+        return site;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSite(String site) {
+        this.site = site;
     }
 
     public Double getNota() {

@@ -26,14 +26,14 @@ public class FormularioHelper {
         this.nome = (EditText) formularioActivity.findViewById(R.id.formulario_nome);
         this.telefone = (EditText) formularioActivity.findViewById(R.id.formulario_telefone);
         this.endereco = (EditText) formularioActivity.findViewById(R.id.formulario_endereco);
-        this.email = (EditText) formularioActivity.findViewById(R.id.formulario_email);
+        this.email = (EditText) formularioActivity.findViewById(R.id.formulario_site);
         this.nota = (RatingBar) formularioActivity.findViewById(R.id.formulario_ratio);
 
     }
 
     public Aluno criaAluno(){
         aluno.setNome(nome.getText().toString());
-        aluno.setEmail(email.getText().toString());
+        aluno.setSite(email.getText().toString());
         aluno.setEndereco(endereco.getText().toString());
         aluno.setNota(Double.valueOf(nota.getProgress()));
         aluno.setTelefone(telefone.getText().toString());
@@ -53,7 +53,7 @@ public class FormularioHelper {
         nome.setText(aluno.getNome());
         telefone.setText(aluno.getTelefone());
         endereco.setText(aluno.getEndereco());
-        email.setText(aluno.getEmail());
+        email.setText(aluno.getSite());
         nota.setProgress(aluno.getNota().intValue());
 
         this.aluno = aluno;
