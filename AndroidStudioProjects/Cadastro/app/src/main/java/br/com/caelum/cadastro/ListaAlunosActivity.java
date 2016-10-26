@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.Normalizer;
 import java.util.List;
 
 import br.com.caelum.cadastro.DAO.AlunoDAO;
@@ -38,8 +39,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Aluno aluno = (Aluno) adapterView.getItemAtPosition(i);
-                Toast.makeText(ListaAlunosActivity.this,"Clique simples "+aluno.getNome(),Toast.LENGTH_SHORT).show();
+                Aluno alunoSelecionado = (Aluno) adapterView.getItemAtPosition(i);
+                Intent edicao = new Intent(ListaAlunosActivity.this, FormularioActivity.class);
+                edicao.putExtra("aluno", alunoSelecionado);
+                startActivity(edicao);
             }
         });
 

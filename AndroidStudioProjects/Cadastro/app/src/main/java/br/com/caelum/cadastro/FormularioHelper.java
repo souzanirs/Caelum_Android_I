@@ -48,4 +48,14 @@ public class FormularioHelper {
     public void mostraErro() {
         nome.setError("Campo nome obrigatório");
     }
+
+    public void carregaAluno(Aluno aluno){
+        nome.setText(aluno.getNome());
+        telefone.setText(aluno.getTelefone());
+        endereco.setText(aluno.getEndereco());
+        email.setText(aluno.getEmail());
+        nota.setProgress(aluno.getNota().intValue());
+
+        this.aluno = aluno;
+    }
 }

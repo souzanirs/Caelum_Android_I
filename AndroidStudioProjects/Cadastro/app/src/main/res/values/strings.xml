@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cadastro De Alunos</string>
+    <string name="nota_aluno">NOTA DO ALUNO</string>
 </resources>

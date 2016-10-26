@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,15 +58,25 @@ public class AlunoDAO extends SQLiteOpenHelper {
     }
 
     public void insereAlunoDB(Aluno aluno){
-        ContentValues valores = new ContentValues();
 
+        /*
+           Extraimos as ações de carregar os dados para um método,
+           pois utilizaremos a mesma ação no "insere" e no "altera"
+        */
+        ContentValues valores = getContentValuesAluno( aluno );
+        getWritableDatabase().insert(tabela,null, valores);
+    }
+
+    //Nosso Metodo para pegar as informaçoes do aluno
+    @NonNull
+    private ContentValues getContentValuesAluno(Aluno aluno) {
+        ContentValues valores = new ContentValues();
         valores.put("nome",aluno.getNome());
         valores.put("telefone",aluno.getTelefone());
         valores.put("email",aluno.getEmail());
         valores.put("endereco",aluno.getEndereco());
         valores.put("nota",aluno.getNota());
-
-        getWritableDatabase().insert(tabela,null, valores);
+        return valores;
     }
 
     public List<Aluno> getLista(){
@@ -94,6 +105,12 @@ public class AlunoDAO extends SQLiteOpenHelper {
     public void deletar(Aluno a){
         String[] args = {String.valueOf(a.getId())};
         getWritableDatabase().delete("alunos", "id=?", args);
+    }
+
+    public void alteraAluno(Aluno aluno){
+        ContentValues valores = getContentValuesAluno(aluno);
+        String[] idAluno = {String.valueOf(aluno.getId())};
+        getWritableDatabase().update("alunos",valores,"id = ?",idAluno);
     }
 
 }

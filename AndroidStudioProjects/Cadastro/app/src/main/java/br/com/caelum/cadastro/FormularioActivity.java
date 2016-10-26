@@ -1,5 +1,6 @@
 package br.com.caelum.cadastro;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,11 +15,14 @@ import br.com.caelum.cadastro.classes.Aluno;
 public class FormularioActivity extends AppCompatActivity {
 
     private FormularioHelper helper; //Criando um atributo herper
+    public static final String alunoSelecionado = "alunoSelecionado";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
+
+        helper = new FormularioHelper(this); //instanciando o Objeto helper
 
         //Nosso botão Salvar está no menu
 //        Button btnSalvar = (Button) findViewById(R.id.formulario_botao);
@@ -46,10 +50,11 @@ public class FormularioActivity extends AppCompatActivity {
 //            }
 //        });
 
-        this.helper = new FormularioHelper(this); //instanciando o Objeto helper
-
-
-
+        Intent intent = this.getIntent();
+        if(intent.hasExtra("aluno")){
+            Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
+            helper.carregaAluno(aluno);
+        }
     }
 
     @Override
@@ -86,9 +91,18 @@ public class FormularioActivity extends AppCompatActivity {
                     //Instancia um novo aluno DAO para fazer o insert na base
                     AlunoDAO alunoDao = new AlunoDAO(FormularioActivity.this);
 
-                    //É feito a inserção do aluno na base de dados
-                    alunoDao.insereAlunoDB(aluno);
-                    Toast.makeText(FormularioActivity.this, "Aluno "+aluno.getNome()+" salvo com sucesso",Toast.LENGTH_SHORT).show();
+                    if(aluno.getId() == 0){
+                        //É feito a inserção do aluno na base de dados
+                        alunoDao.insereAlunoDB(aluno);
+                        Toast.makeText(FormularioActivity.this, "Aluno "+aluno.getNome()+" salvo",Toast.LENGTH_SHORT).show();
+                    } else {
+                        //É feito a alteração do aluno na base de dados
+                        alunoDao.alteraAluno(aluno);
+                        Toast.makeText(FormularioActivity.this, "Aluno "+aluno.getNome()+" alterado",Toast.LENGTH_SHORT).show();
+                    }
+
+                    //Sempre que houver interação com banco da dados é importante fechar o mesmo
+                    alunoDao.close();
 
                     finish();
 

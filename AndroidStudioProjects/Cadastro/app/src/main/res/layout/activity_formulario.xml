@@ -15,7 +15,7 @@
             android:id="@+id/formulario_nome"
             android:hint="Nome"
             android:textAlignment="center"
-            android:textSize="25dp"
+            android:textSize="15sp"
             />
 
         <EditText
@@ -24,7 +24,7 @@
             android:id="@+id/formulario_telefone"
             android:hint="Telefone"
             android:textAlignment="center"
-            android:textSize="25dp"/>
+            android:textSize="15sp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:id="@+id/formulario_email"
             android:hint="email"
             android:textAlignment="center"
-            android:textSize="25dp"/>
+            android:textSize="15sp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -40,14 +40,22 @@
             android:id="@+id/formulario_endereco"
             android:hint="Endereço"
             android:textAlignment="center"
-            android:textSize="25dp"/>
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nota_aluno"
+            android:textAlignment="center"
+            android:paddingTop="30dp"/>
 
         <RatingBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
             android:layout_gravity="center"
-            android:id="@+id/formulario_ratio"/>
+            android:id="@+id/formulario_ratio"
+            android:paddingTop="20dp"/>
 
     </LinearLayout>
 

@@ -25,6 +25,6 @@
         android:paddingBottom="15dp"
         android:text="+"
         android:textColor="#FFFFFF"
-        android:textSize="40sp"/>
+        android:textSize="40dp"/>
 
 </RelativeLayout>
