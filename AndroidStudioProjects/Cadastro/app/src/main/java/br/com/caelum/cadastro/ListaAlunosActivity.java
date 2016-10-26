@@ -1,6 +1,8 @@
 package br.com.caelum.cadastro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -113,9 +115,20 @@ public class ListaAlunosActivity extends AppCompatActivity {
         deletar.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                dao.deletar(alunoSelecionado);
-                carregaLista();
+                new AlertDialog.Builder(ListaAlunosActivity.this).
+                        setIcon(android.R.drawable.ic_dialog_alert).
+                        setTitle("Deletar").
+                        setMessage("Deseja realmente deletar o registro?").
+                        setPositiveButton( "Quero", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                                dao.deletar(alunoSelecionado);
+                                dao.close();
+                                carregaLista();
+                            }
+                        } ).setNegativeButton("Não",null).show();
+
                 return false;
             }
         } );
