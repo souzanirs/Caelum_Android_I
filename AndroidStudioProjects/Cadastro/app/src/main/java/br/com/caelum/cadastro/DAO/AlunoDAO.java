@@ -92,7 +92,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
     }
 
     public void deletar(Aluno a){
-        String[] args = {String.valueOf( a.getId() )};
+        String[] args = {String.valueOf(a.getId())};
         getWritableDatabase().delete("alunos", "id=?", args);
     }
 

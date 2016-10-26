@@ -115,6 +115,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
                 dao.deletar(alunoSelecionado);
+                carregaLista();
                 return false;
             }
         } );
