@@ -21,7 +21,8 @@ public class Permissao {
         String[] permissoes = {
                 Manifest.permission.CALL_PHONE,
                 Manifest.permission.RECEIVE_SMS,
-                Manifest.permission.INTERNET
+                Manifest.permission.INTERNET,
+                Manifest.permission.CAMERA
         };
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

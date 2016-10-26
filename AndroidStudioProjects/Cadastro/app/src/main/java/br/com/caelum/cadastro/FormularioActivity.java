@@ -1,21 +1,31 @@
 package br.com.caelum.cadastro;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.File;
 
 import br.com.caelum.cadastro.DAO.AlunoDAO;
 import br.com.caelum.cadastro.classes.Aluno;
 
 public class FormularioActivity extends AppCompatActivity {
 
+    private static final int cameraCODE = 123; //Codigo para o retorno da Camera
     private FormularioHelper helper; //Criando um atributo herper
-    public static final String alunoSelecionado = "alunoSelecionado";
+    private String localArquivoFoto=""; //Criando variavel para armazenar endereço da foto no sistema
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +60,33 @@ public class FormularioActivity extends AppCompatActivity {
 //            }
 //        });
 
-        Intent intent = this.getIntent();
+        //Pegando o aluno passado da Lista para a edição de seu cadastro
+        final Intent intent = this.getIntent();
         if(intent.hasExtra("aluno")){
             Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
             helper.carregaAluno(aluno);
         }
+
+        //Criando ação relizada quanto clicado no botão para adicionar foto
+        Button foto = helper.getFotoBotao();
+        foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /*
+                    Indica o local de armazenamento e nome do arquivo a ser gerado
+                      # "getExternalFilesDir" indica o local onde fica armazenado a aplicação
+                      # pode-se ao invés de definir NULL, indicar o nome de uma subpasta
+                 */
+                localArquivoFoto = getExternalFilesDir(null)+"/"+System.currentTimeMillis()+".jpg";
+                Uri localFoto = Uri.fromFile(new File(localArquivoFoto));
+
+                Intent intentCamera = new Intent( MediaStore.ACTION_IMAGE_CAPTURE);
+                intentCamera.putExtra( MediaStore.EXTRA_OUTPUT, localFoto);
+                startActivityForResult(intentCamera, cameraCODE);
+            }
+        } );
+
     }
 
     @Override
@@ -118,5 +150,16 @@ public class FormularioActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == cameraCODE){
+            if(resultCode == Activity.RESULT_OK){
+                helper.carregaImagem(this.localArquivoFoto);
+            } else {
+                this.localArquivoFoto = null;
+            }
+        }
     }
 }

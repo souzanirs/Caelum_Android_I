@@ -1,6 +1,10 @@
 package br.com.caelum.cadastro;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import br.com.caelum.cadastro.classes.Aluno;
@@ -18,6 +22,8 @@ public class FormularioHelper {
     private EditText endereco;
     private EditText email;
     private RatingBar nota;
+    private ImageView foto;
+    private Button fotoBotao;
 
     public FormularioHelper(FormularioActivity formularioActivity) {
 
@@ -28,6 +34,8 @@ public class FormularioHelper {
         this.endereco = (EditText) formularioActivity.findViewById(R.id.formulario_endereco);
         this.email = (EditText) formularioActivity.findViewById(R.id.formulario_site);
         this.nota = (RatingBar) formularioActivity.findViewById(R.id.formulario_ratio);
+        this.foto = (ImageView) formularioActivity.findViewById(R.id.formulario_foto);
+        this.fotoBotao = (Button) formularioActivity.findViewById(R.id.formulario_botao_foto);
 
     }
 
@@ -57,5 +65,16 @@ public class FormularioHelper {
         nota.setProgress(aluno.getNota().intValue());
 
         this.aluno = aluno;
+    }
+
+    public Button getFotoBotao(){
+        return fotoBotao;
+    }
+
+    public void carregaImagem(String localArquivoFoto) {
+        Bitmap bitmapFoto = BitmapFactory.decodeFile(localArquivoFoto);
+        Bitmap bitmapFotoreduzida = Bitmap.createScaledBitmap(bitmapFoto, 300, 300, true);
+        foto.setImageBitmap(bitmapFotoreduzida);
+        foto.setTag(localArquivoFoto);
     }
 }
