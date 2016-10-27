@@ -24,6 +24,8 @@ import br.com.caelum.cadastro.adapter.ListaAlunoAdapter;
 import br.com.caelum.cadastro.classes.Aluno;
 import br.com.caelum.cadastro.classes.Permissao;
 import br.com.caelum.cadastro.converter.AlunoConverter;
+import br.com.caelum.cadastro.support.WebClient;
+import br.com.caelum.cadastro.task.EnviaAlunosTask;
 
 import static android.content.Intent.ACTION_CALL;
 import static android.content.Intent.ACTION_SEND;
@@ -199,14 +201,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.menu_enviar_notas:
-                AlunoDAO dao = new AlunoDAO(this);
-                List<Aluno> alunos = dao.getLista();
-                dao.close();
 
-                //Convertendo os alunos da lista para JSON por meio da classe "ALUNOCONVERTER"
-                String json = new AlunoConverter().toJSON(alunos);
-
-                Toast.makeText(this, json, Toast.LENGTH_LONG).show();
+                new EnviaAlunosTask(this).execute();
                 return true;
         }
         return super.onOptionsItemSelected(item);
