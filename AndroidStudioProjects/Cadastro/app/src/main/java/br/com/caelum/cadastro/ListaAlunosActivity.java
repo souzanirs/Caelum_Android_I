@@ -17,6 +17,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import br.com.caelum.cadastro.DAO.AlunoDAO;
+import br.com.caelum.cadastro.adapter.ListaAlunoAdapter;
 import br.com.caelum.cadastro.classes.Aluno;
 import br.com.caelum.cadastro.classes.Permissao;
 
@@ -103,8 +104,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
         //sempre que abrir conexão, após utiliza-lo, fechar a conexão
         dao.close();
 
-        //Para preenchermos a lista precisamos adapta-la a um layout, carregando as informações passadas (no nosso caso os nomes)
-        final ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, listaAlunos);
+        /* Removemos o antigo Adapter, agora utilizaremos nosso Adapter "ListaAlunoAdapter"" */
+
+
+        ListaAlunoAdapter adapter = new ListaAlunoAdapter(this, listaAlunos);
         lista.setAdapter(adapter);
     }
 
