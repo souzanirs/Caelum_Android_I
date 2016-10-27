@@ -19,7 +19,7 @@ import br.com.caelum.cadastro.classes.Aluno;
 public class AlunoDAO extends SQLiteOpenHelper {
 
     private static final String nomeBanco = "CadastroCaelum";
-    private static final int versao = 1;
+    private static final int versao = 2;
     private static final String tabela = "alunos";
 
     public AlunoDAO(Context context) {
@@ -43,9 +43,10 @@ public class AlunoDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int versaoAntiga, int versaoNova) {
 
-        String sql = "DROP TABLE IF EXISTS "+tabela+";";
+        //String sql = "DROP TABLE IF EXISTS "+tabela+";";
+        String sql = "ALTER TABLE "+tabela+" ADD COLUMN caminhofoto TEXT;"; //Alteramos no exercício 7.6
         sqLiteDatabase.execSQL(sql);
-        onCreate(sqLiteDatabase);
+        //onCreate(sqLiteDatabase); //Removido no exercício 7.6
 
         /*
         * Uma opção para que não se perca as informações inseridas no banco
@@ -76,6 +77,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
         valores.put("email",aluno.getSite());
         valores.put("endereco",aluno.getEndereco());
         valores.put("nota",aluno.getNota());
+        valores.put("caminhofoto",aluno.getCaminhoFoto());
         return valores;
     }
 
@@ -95,6 +97,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
             aluno.setTelefone(c.getString(c.getColumnIndex("telefone")));
             aluno.setSite(c.getString(c.getColumnIndex("email")));
             aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
+            aluno.setCaminhoFoto(c.getString(c.getColumnIndex("caminhofoto")));
 
             lista.add(aluno);
         }

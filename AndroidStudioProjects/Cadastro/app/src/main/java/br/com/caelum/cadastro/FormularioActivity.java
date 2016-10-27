@@ -25,7 +25,7 @@ public class FormularioActivity extends AppCompatActivity {
 
     private static final int cameraCODE = 123; //Codigo para o retorno da Camera
     private FormularioHelper helper; //Criando um atributo herper
-    private String localArquivoFoto=""; //Criando variavel para armazenar endereço da foto no sistema
+    private String localArquivoFoto; //Criando variavel para armazenar endereço da foto no sistema
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,9 +156,9 @@ public class FormularioActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == cameraCODE){
             if(resultCode == Activity.RESULT_OK){
-                helper.carregaImagem(this.localArquivoFoto);
+                helper.carregaImagem(localArquivoFoto);
             } else {
-                this.localArquivoFoto = null;
+                localArquivoFoto = null;
             }
         }
     }

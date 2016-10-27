@@ -45,6 +45,7 @@ public class FormularioHelper {
         aluno.setEndereco(endereco.getText().toString());
         aluno.setNota(Double.valueOf(nota.getProgress()));
         aluno.setTelefone(telefone.getText().toString());
+        aluno.setCaminhoFoto((String) foto.getTag());
 
         return aluno;
     }
@@ -58,11 +59,17 @@ public class FormularioHelper {
     }
 
     public void carregaAluno(Aluno aluno){
+
         nome.setText(aluno.getNome());
         telefone.setText(aluno.getTelefone());
         endereco.setText(aluno.getEndereco());
         email.setText(aluno.getSite());
         nota.setProgress(aluno.getNota().intValue());
+
+        //Valida se o aluno possui foto, caso possua carrega na tela
+        if(aluno.getCaminhoFoto() != null){
+            carregaImagem(aluno.getCaminhoFoto());
+        }
 
         this.aluno = aluno;
     }
@@ -76,5 +83,7 @@ public class FormularioHelper {
         Bitmap bitmapFotoreduzida = Bitmap.createScaledBitmap(bitmapFoto, 300, 300, true);
         foto.setImageBitmap(bitmapFotoreduzida);
         foto.setTag(localArquivoFoto);
+        foto.setScaleType(ImageView.ScaleType.FIT_XY);
     }
+
 }

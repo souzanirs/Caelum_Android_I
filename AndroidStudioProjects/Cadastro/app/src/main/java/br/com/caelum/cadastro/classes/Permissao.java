@@ -22,7 +22,8 @@ public class Permissao {
                 Manifest.permission.CALL_PHONE,
                 Manifest.permission.RECEIVE_SMS,
                 Manifest.permission.INTERNET,
-                Manifest.permission.CAMERA
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
