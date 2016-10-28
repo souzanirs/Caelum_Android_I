@@ -199,12 +199,21 @@ public class ListaAlunosActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
+
         switch (item.getItemId()){
+
             case R.id.menu_enviar_notas:
 
                 new EnviaAlunosTask(this).execute();
                 return true;
+
+            case R.id.menu_receber_provas:
+
+                Intent provas = new Intent(this, ProvasActivity.class);
+                startActivity(provas);
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
