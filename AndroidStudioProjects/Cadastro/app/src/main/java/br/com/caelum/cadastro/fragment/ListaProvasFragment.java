@@ -16,6 +16,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
+import br.com.caelum.cadastro.ProvasActivity;
 import br.com.caelum.cadastro.R;
 import br.com.caelum.cadastro.classes.Prova;
 
@@ -48,9 +49,14 @@ public class ListaProvasFragment extends Fragment {
         this.listViewProvas.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long l) {
+
                 Prova selecionada = (Prova) adapterView.getItemAtPosition(posicao);
 
                 Toast.makeText( getActivity(), "Prova Selecionada: "+selecionada, Toast.LENGTH_SHORT ).show();
+
+                ProvasActivity calendarioProvas = (ProvasActivity) getActivity();
+                calendarioProvas.selecionaProva(selecionada);
+
             }
         } );
 

@@ -3,6 +3,7 @@ package br.com.caelum.cadastro;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.sax.StartElementListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -211,6 +212,12 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
                 Intent provas = new Intent(this, ProvasActivity.class);
                 startActivity(provas);
+                return true;
+
+            case R.id.menu_mapa:
+
+                Intent mapa = new Intent(this, MostraAlunosActivity.class);
+                startActivity(mapa);
                 return true;
         }
 
