@@ -8,6 +8,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 public class MapaFragment extends SupportMapFragment {
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        
+    }
 
 
 }
