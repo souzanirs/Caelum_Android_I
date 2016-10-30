@@ -19,7 +19,7 @@ import br.com.caelum.cadastro.classes.Aluno;
 public class AlunoDAO extends SQLiteOpenHelper {
 
     private static final String nomeBanco = "CadastroCaelum";
-    private static final int versao = 2;
+    private static final int versao = 1;
     private static final String tabela = "alunos";
 
     public AlunoDAO(Context context) {
@@ -35,7 +35,8 @@ public class AlunoDAO extends SQLiteOpenHelper {
                         "telefone text," +
                         "endereco text," +
                         "email text," +
-                        "nota Real);";
+                        "nota Real," +
+                        "caminhofoto text);";
 
         sqLiteDatabase.execSQL(sql);
     }
@@ -43,8 +44,8 @@ public class AlunoDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int versaoAntiga, int versaoNova) {
 
-        //String sql = "DROP TABLE IF EXISTS "+tabela+";";
-        String sql = "ALTER TABLE "+tabela+" ADD COLUMN caminhofoto TEXT;"; //Alteramos no exercício 7.6
+        String sql = "DROP TABLE IF EXISTS "+tabela+";";
+        //String sql = "ALTER TABLE "+tabela+" ADD COLUMN caminhofoto TEXT;"; //Alteramos no exercício 7.6
         sqLiteDatabase.execSQL(sql);
         //onCreate(sqLiteDatabase); //Removido no exercício 7.6
 
