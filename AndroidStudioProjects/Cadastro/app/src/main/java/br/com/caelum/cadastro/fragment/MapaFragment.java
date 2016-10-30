@@ -16,66 +16,58 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import br.com.caelum.cadastro.DAO.AlunoDAO;
 import br.com.caelum.cadastro.classes.Aluno;
+import br.com.caelum.cadastro.location.AtualizadorDeLocalizacao;
 import br.com.caelum.cadastro.util.Localizador;
 
 /**
  * Created by android6275 on 28/10/16.
  */
 
-public class MapaFragment extends SupportMapFragment implements OnMapReadyCallback {
+public class MapaFragment extends SupportMapFragment {
 
+    GoogleMap map;
     LatLng posicao;
 
     @Override
     public void onResume(){
         super.onResume();
 
-        getMapAsync(this);
+        getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
 
-    }
+                MapaFragment.this.map = googleMap;
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
+                Localizador localizador = new Localizador(getActivity());
+                LatLng local = localizador.getCoordenada("Rua Desembargador Julio Cesar da Silveira, 1117, Limeira");
 
-        AlunoDAO dao = new AlunoDAO(getContext());
-        List<Aluno> listaAlunos = dao.getLista();
+                centralizaNo(local, googleMap);
 
-        for(Aluno aluno : listaAlunos){
+                AlunoDAO alunoDAO = new AlunoDAO(getContext());
+                List<Aluno> alunos = alunoDAO.getLista();
+                alunoDAO.close();
 
-            String endereco = aluno.getEndereco();
+                for(Aluno aluno : alunos){
+                    LatLng coordenada = localizador.getCoordenada(aluno.getEndereco());
 
-            //Pega as coordenadas do endereço passado
-            posicao = getCoordenadas(endereco);
+                    if(coordenada != null){
+                        MarkerOptions marcador = new MarkerOptions()
+                                                        .position(coordenada)
+                                                        .title(aluno.getNome())
+                                                        .snippet(aluno.getTelefone());
 
-            if(posicao != null){
-
-                MarkerOptions marcador = new MarkerOptions();
-                marcador.position(posicao);
-                marcador.title(aluno.getNome());
-                marcador.snippet(aluno.getTelefone());
-                googleMap.addMarker(marcador);
-
-            } else {
-
-                Log.i("POSICAO NULA", String.valueOf(posicao));
+                        googleMap.addMarker(marcador);
+                    }
+                }
 
             }
+        });
 
-        }
-
-        dao.close();
-
-        /*Criamos nossa variavel com as coordenadas (latitude e longitude) e a informação de *zoom
-                     ZOOM: O valor pode variar entre 0 a 18, sendo 0 o mais distante possível e 18 o mais próximo*/
-        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(posicao, 12);
-
-        googleMap.moveCamera(update);
-        //indicamos para o googleMap onde queremos posicionar a Camera (Tela)
-
-        Log.i("Posição com endereço", String.valueOf(update));
+        AtualizadorDeLocalizacao atualizador = new AtualizadorDeLocalizacao(getActivity(), this, map);
 
     }
 
@@ -102,6 +94,9 @@ public class MapaFragment extends SupportMapFragment implements OnMapReadyCallba
         } catch (IOException e){ e.printStackTrace(); }
 
         return null;
+    }
 
+    public void centralizaNo(LatLng local, GoogleMap googleMap) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(local, 11));
     }
 }

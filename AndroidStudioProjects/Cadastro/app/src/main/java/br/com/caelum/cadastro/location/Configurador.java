@@ -26,7 +26,7 @@ public class Configurador implements GoogleApiClient.ConnectionCallbacks {
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         request.setSmallestDisplacement(50);
 
-        //atualizador.inicia(request);
+        atualizador.inicia(request);
     }
 
     @Override
